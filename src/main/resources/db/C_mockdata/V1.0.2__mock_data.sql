@@ -1,0 +1,26 @@
+--insert into user(mail, google_id, facebook_id) values ('danilo@korber.com.br', '118181180413650181076', '5092200630827923');
+--insert into user(mail, google_id, facebook_id) values ('danilo@easyware.com.br', '11111', '22222');
+
+insert into bet(id, match_id, user_id, score_a, score_b, bet_made_at, active) values ('31ca701ee11411ec9d640242ac120001', 1, 'd5ad9086-4292-49aa-a2b4-8967d455d364', 2, 1, '2020-04-30T12:34:45Z', true);
+insert into bet(id, match_id, user_id, score_a, score_b, bet_made_at, active) values ('31ca701ee11411ec9d640242ac120002', 2, 'd5ad9086-4292-49aa-a2b4-8967d455d364', 2, 1, '2020-04-30T12:34:45Z', false);
+insert into bet(id, match_id, user_id, score_a, score_b, bet_made_at, active) values ('31ca701ee11411ec9d640242ac120003', 2, 'd5ad9086-4292-49aa-a2b4-8967d455d364', 2, 0, '2020-04-30T12:34:45Z', false);
+insert into bet(id, match_id, user_id, score_a, score_b, bet_made_at, active) values ('31ca701ee11411ec9d640242ac120004', 2, 'd5ad9086-4292-49aa-a2b4-8967d455d364', 3, 1, '2020-04-30T12:34:45Z', false);
+insert into bet(id, match_id, user_id, score_a, score_b, bet_made_at, active) values ('31ca701ee11411ec9d640242ac120005', 2, 'd5ad9086-4292-49aa-a2b4-8967d455d364', 3, 0, '2020-04-30T12:34:45Z', true);
+insert into bet(id, match_id, user_id, score_a, score_b, bet_made_at, active) values ('dcc3b5d012d74a8b8501dc6cdcb3fe67', 64, 'd5ad9086-4292-49aa-a2b4-8967d455d364', 0, 1, '2020-04-30T12:34:45Z', true);
+insert into bet(id, match_id, user_id, score_a, score_b, bet_made_at, active) values ('de7a4862e11311ec9d640242ac120002', 64, 'f02f231c-b637-4ee6-8e6d-da5e4646e6ff', 3, 0, '2020-04-30T12:34:45Z', true);
+insert into bet(id, match_id, user_id, score_a, score_b, bet_made_at, active) values ('3668d9f8e11411ec9d640242ac120002', 1, 'f02f231c-b637-4ee6-8e6d-da5e4646e6ff', 3, 1, '2020-04-30T12:34:45Z', true);
+insert into bet(id, match_id, user_id, score_a, score_b, bet_made_at, active) values ('3668d9f8e11411ec9d640242ac120102', 1, 'f02f231c-b637-4ee6-8e6d-da5e4646e6ff', 1, 1, '2020-04-30T12:34:45Z', true);
+insert into bet(id, match_id, user_id, score_a, score_b, bet_made_at, active) values ('3668d9f8e11411ec9d640242ac120202', 1, 'f02f231c-b637-4ee6-8e6d-da5e4646e6ff', 4, 1, '2020-04-30T12:34:45Z', true);
+insert into bet(id, match_id, user_id, score_a, score_b, bet_made_at, active) values ('3668d9f8e11411ec9d640242ac120302', 1, 'f02f231c-b637-4ee6-8e6d-da5e4646e6ff', 2, 1, '2020-04-30T12:34:45Z', true);
+insert into bet(id, match_id, user_id, score_a, score_b, bet_made_at, active) values ('3668d9f8e11411ec9d640242ac120402', 1, 'f02f231c-b637-4ee6-8e6d-da5e4646e6ff', 0, 0, '2020-04-30T12:34:45Z', true);
+insert into bet(id, match_id, user_id, score_a, score_b, bet_made_at, active) values ('3668d9f8e11411ec9d640242ac120502', 1, 'f02f231c-b637-4ee6-8e6d-da5e4646e6ff', 0, 2, '2020-04-30T12:34:45Z', true);
+insert into bet(id, match_id, user_id, score_a, score_b, bet_made_at, active) values ('3668d9f8e11411ec9d640242ac120602', 1, 'f02f231c-b637-4ee6-8e6d-da5e4646e6ff', 1, 3, '2020-04-30T12:34:45Z', true);
+insert into bet(id, match_id, user_id, score_a, score_b, bet_made_at, active) values ('3668d9f8e11411ec9d640242ac120702', 1, 'f02f231c-b637-4ee6-8e6d-da5e4646e6ff', 2, 0, '2022-04-30T12:34:45Z', true);
+insert into bet(id, match_id, user_id, score_a, score_b, bet_made_at, active) values ('3668d9f8e11411ec9d640242ac120802', 1, 'f02f231c-b637-4ee6-8e6d-da5e4646e6ff', 7, 5, '2020-04-30T12:34:45Z', true);
+insert into bet(id, match_id, user_id, score_a, score_b, bet_made_at, active) values ('3668d9f8e11411ec9d640242ac120902', 1, 'f02f231c-b637-4ee6-8e6d-da5e4646e6ff', 3, 4, '2020-04-30T12:34:45Z', true);
+insert into bet(id, match_id, user_id, score_a, score_b, bet_made_at, active) values ('3668d9f8e11411ec9d640242ac121002', 1, 'f02f231c-b637-4ee6-8e6d-da5e4646e6ff', 7, 1, '2020-04-30T12:34:45Z', true);
+insert into bet(id, match_id, user_id, score_a, score_b, bet_made_at, active) values ('3668d9f8e11411ec9d640242ac122002', 1, 'f02f231c-b637-4ee6-8e6d-da5e4646e6ff', 0, 1, '2020-04-30T12:34:45Z', true);
+insert into bet(id, match_id, user_id, score_a, score_b, bet_made_at, active) values ('3668d9f8e11411ec9d640242ac123002', 1, 'f02f231c-b637-4ee6-8e6d-da5e4646e6ff', 0, 2, '2020-04-30T12:34:45Z', true);
+insert into bet(id, match_id, user_id, score_a, score_b, bet_made_at, active) values ('3668d9f8e11411ec9d640242ac124002', 1, 'f02f231c-b637-4ee6-8e6d-da5e4646e6ff', 3, 0, '2020-04-30T12:34:45Z', true);
+insert into bet(id, match_id, user_id, score_a, score_b, bet_made_at, active) values ('3668d9f8e11411ec9d640242ac125002', 1, 'f02f231c-b637-4ee6-8e6d-da5e4646e6ff', 2, 4, '2020-04-30T12:34:45Z', true);
+insert into bet(id, match_id, user_id, score_a, score_b, bet_made_at, active) values ('3668d9f8e11411ec9d640242ac126002', 1, 'f02f231c-b637-4ee6-8e6d-da5e4646e6ff', 2, 2, '2020-04-30T12:34:45Z', true);

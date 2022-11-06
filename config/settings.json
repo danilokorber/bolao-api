@@ -1,0 +1,29 @@
+{
+  "name": "bolao-api",
+  "version": "2022.0.0",
+  "jenkins": {
+    "dns": {
+      "host": "tippspiel-api",
+      "domain": "easyware.io",
+      "resourceGroup": "easyware",
+      "cname": "obelix.easyware.io"
+    },
+    "traefik": {
+      "resolver": "easywareresolver"
+    },
+    "nexus": {
+      "hostname": "nexus.easyware.io",
+      "hostedPort": 8083,
+      "groupPort": 8082,
+      "imageGroup": "easyware"
+    },
+    "docker": {
+      "labels": "./config/dockerLabels.txt",
+      "network": "easyware"
+    },
+    "sonar": {
+      "host": "https://sonar.easyware.io",
+      "properties": "./config/sonar.properties"
+    }
+  }
+}
