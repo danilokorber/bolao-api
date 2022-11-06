@@ -25,7 +25,7 @@ import static io.easyware.shared.Slug.BASE_URL;
 @AllArgsConstructor
 @Data
 @Log
-@Table(name = "match")
+@Table(name = "matches")
 @JsonPropertyOrder({"id", "url", "tournamentMatchId", "groupId", "kickoff", "venue", "home", "away", "scoreHome", "scoreAway", "psoHome", "psoAway"})
 public class Match extends PanacheEntityBase {
 
