@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 @Log
@@ -65,9 +66,13 @@ public class RankingService {
 
         List<KeycloakUser> users = keycloakService.findAll();
         users.forEach(user -> {
+
+            if (user.getAttributes() != null && user.getAttributes().getPayment_on() != null && user.getAttributes().getPayment_on().size() > 0) {
+
+Date paymentDate = new Date(String.valueOf(user.getAttributes().getPayment_on().get(0)));
             Ranking newRanking = new Ranking();
             newRanking.setUser(user);
-            List<Bet> bets = betService.getAllBetsFromUserForTournamentEdition(user.getId(), tournamentEdition);
+            List<Bet> bets = betService.getAllBetsFromUserForTournamentEdition(user.getId(), tournamentEdition); //.stream().filter(b -> b.getBetPlacedOn().after(paymentDate)).collect(Collectors.toList());
             newRanking.setBets(bets);
             int points = 0;
             if (bets.size() > 0) {
@@ -76,12 +81,15 @@ public class RankingService {
                         .reduce(0, Integer::sum);
             }
             newRanking.setPoints(points);
+
+            log.info(newRanking.toString());
             ranking.add(newRanking);
+            }
         });
 
         ranking.sort(Comparator.comparingInt(Ranking::getPoints).reversed());
 
-        return ranking;
+        return ranking; //.stream().filter(r -> r.getUser().getAttributes().getPayment_on() != null).collect(Collectors.toList());
     }
 
 }
