@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import io.easyware.shared.http.HttpClient;
+import io.quarkus.scheduler.Scheduled;
 import lombok.extern.java.Log;
 import org.eclipse.microprofile.config.ConfigProvider;
 

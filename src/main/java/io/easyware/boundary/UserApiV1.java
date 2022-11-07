@@ -74,6 +74,7 @@ public class UserApiV1 extends UserApi {
             String mail
     ) {
         try {
+            keycloakService.updateUserList();
             KeycloakUser user = keycloakService.findByMail(mail);
             return user == null ? Response.noContent().build() : Response.ok().entity(user).build();
         } catch (Exception e) {
