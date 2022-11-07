@@ -16,8 +16,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 @ApplicationScoped
 @Log
@@ -32,7 +30,8 @@ public class RankingService {
     @Inject
     TournamentEditionService tournamentEditionService;
 
-    private Map<Long, List<Ranking>> ranking  = new HashMap<Long, List<Ranking>>();;
+    private Map<Long, List<Ranking>> ranking = new HashMap<Long, List<Ranking>>();
+    ;
 
     public List<Ranking> rankingOf(TournamentEdition tournamentEdition) {
         List<Ranking> r = ranking.get(tournamentEdition.getId());
@@ -69,27 +68,25 @@ public class RankingService {
 
             if (user.getAttributes() != null && user.getAttributes().getPayment_on() != null && user.getAttributes().getPayment_on().size() > 0) {
 
-Date paymentDate = new Date(String.valueOf(user.getAttributes().getPayment_on().get(0)));
-            Ranking newRanking = new Ranking();
-            newRanking.setUser(user);
-            List<Bet> bets = betService.getAllBetsFromUserForTournamentEdition(user.getId(), tournamentEdition); //.stream().filter(b -> b.getBetPlacedOn().after(paymentDate)).collect(Collectors.toList());
-            newRanking.setBets(bets);
-            int points = 0;
-            if (bets.size() > 0) {
-                points = bets.stream()
-                        .map(Bet::getPoints)
-                        .reduce(0, Integer::sum);
-            }
-            newRanking.setPoints(points);
+                Ranking newRanking = new Ranking();
+                newRanking.setUser(user);
+                List<Bet> bets = betService.getAllBetsFromUserForTournamentEdition(user.getId(), tournamentEdition);
+                newRanking.setBets(bets);
+                int points = 0;
+                if (bets.size() > 0) {
+                    points = bets.stream()
+                            .map(Bet::getPoints)
+                            .reduce(0, Integer::sum);
+                }
+                newRanking.setPoints(points);
 
-            log.info(newRanking.toString());
-            ranking.add(newRanking);
+                ranking.add(newRanking);
             }
         });
 
         ranking.sort(Comparator.comparingInt(Ranking::getPoints).reversed());
 
-        return ranking; //.stream().filter(r -> r.getUser().getAttributes().getPayment_on() != null).collect(Collectors.toList());
+        return ranking;
     }
 
 }
