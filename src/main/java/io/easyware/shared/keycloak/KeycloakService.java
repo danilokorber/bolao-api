@@ -50,7 +50,9 @@ public class KeycloakService {
         MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
-    private void initToken() {
+    @Scheduled(every = "120s")
+    public void initToken() {
+        log.info("Renewing token");
         try {
             httpClient = new HttpClient(URL_TOKEN);
             String res = httpClient.postForm(tokenRequestBody);
@@ -73,10 +75,15 @@ public class KeycloakService {
 
     public void updateUserList() throws IOException {
         if (token.isValid()) {
-            httpClient = new HttpClient(URL_FIND_USERS);
-            allUsers = MAPPER.readValue(httpClient.get(basicAuth), new TypeReference<List<KeycloakUser>>() {
-            });
-            httpClient.close();
+            try {
+                httpClient = new HttpClient(URL_FIND_USERS);
+                allUsers = MAPPER.readValue(httpClient.get(basicAuth), new TypeReference<List<KeycloakUser>>() {
+                });
+                httpClient.close();
+            } catch (Exception e) {
+                initToken();
+            }
+
         }
     }
 
