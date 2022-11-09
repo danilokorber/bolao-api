@@ -50,7 +50,7 @@ public class KeycloakService {
         MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
-    @Scheduled(every = "120s")
+    //@Scheduled(every = "120s")
     public void initToken() {
         log.info("Renewing token");
         try {
@@ -81,7 +81,7 @@ public class KeycloakService {
                 });
                 httpClient.close();
             } catch (Exception e) {
-                initToken();
+                //initToken();
             }
 
         }
