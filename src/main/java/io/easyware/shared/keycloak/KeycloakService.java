@@ -81,7 +81,8 @@ public class KeycloakService {
                 });
                 httpClient.close();
             } catch (Exception e) {
-                //initToken();
+                log.severe(e.getMessage());
+                initToken();
             }
 
         }
@@ -90,6 +91,7 @@ public class KeycloakService {
     public List<KeycloakUser> findAll() {
         return allUsers;
     }
+
     public KeycloakUser findByMail(String mail) {
         if (tokenIsValid()) {
             try {
