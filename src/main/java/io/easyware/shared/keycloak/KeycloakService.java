@@ -87,6 +87,7 @@ public class KeycloakService {
         }
     }
 
+
     public List<KeycloakUser> findAll() {
         return allUsers;
     }
