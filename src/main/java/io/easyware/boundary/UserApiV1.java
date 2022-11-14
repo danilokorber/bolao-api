@@ -276,6 +276,9 @@ public class UserApiV1 extends UserApi {
         List<Date> list = new ArrayList<>();
         list.add(new Date());
 
+        log.info(user.toString());
+        log.info(attribute.toString());
+
         switch (step) {
             case ACCEPT_RULES:
                 attributes.setRules_accepted_on(list);
@@ -287,11 +290,18 @@ public class UserApiV1 extends UserApi {
                 attributes.setPayment_on(list);
                 break;
             case LOCALE:
+                log.info("Setting locale");
                 attributes.setLocale(attribute);
+                log.info("Setting locale - done.");
                 break;
             default:
         }
+
+        log.info(attribute.toString());
+
         KeycloakUserWithoutPicture userWithoutPicture = new KeycloakUserWithoutPicture(user);
+        log.info(userWithoutPicture.toString());
+
         KeycloakUser updatedUser = keycloakService.persist(userWithoutPicture);
         log.info("New: " + updatedUser.toString());
         keycloakService.updateUserList();

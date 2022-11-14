@@ -132,6 +132,7 @@ public class KeycloakService {
         if (tokenIsValid()) {
             httpClient = new HttpClient(URL_UPDATE_USER + "/" + user.getId());
             String res = httpClient.put(user, basicAuth);
+            log.info("res: " + res);
             updateUserList();
             return findUserByKeycloakId(user.getId());
         }

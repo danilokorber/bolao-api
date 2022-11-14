@@ -25,6 +25,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -217,6 +218,7 @@ public class TournamentsApiV1 extends TournamentsApi {
         String userId = keycloakService.getKeycloakIdFromMail(sec.getUserPrincipal().getName());
         betService.updateBetsForTournamentEdition(tournamentEdition, userId);
         List<Match> matches = tournamentEdition.getMatches();
+        matches.sort(Comparator.comparing(Match::getKickoff));
         if (next == 0) {
             return Response.ok().entity(matches).build();
         } else {
