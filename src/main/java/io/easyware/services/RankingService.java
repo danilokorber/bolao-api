@@ -41,9 +41,9 @@ public class RankingService {
         return r;
     }
 
-    public Map<String, Object> userRank(KeycloakUser user, TournamentEdition tournamentEdition) {
+    public Map<String, Object> userRank(KeycloakUser user, TournamentEdition tournamentEdition) throws IOException {
         Map<String, Object> res = new HashMap<>();
-        List<Ranking> ranking = rankingOf(tournamentEdition);
+        List<Ranking> ranking = prepareFor(tournamentEdition);
         ranking.forEach(r -> {
             if (r.getUser().getEmail().equals(user.getEmail())) {
                 res.put("position", ranking.indexOf(r) + 1);

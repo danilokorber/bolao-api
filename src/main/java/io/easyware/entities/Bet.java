@@ -66,5 +66,5 @@ public class Bet extends PanacheEntityBase {
         return BASE_URL + "/bets/id/" + id;
     }
 
-    public int getPoints() { return PointsService.calculatePoints( this);  }
+    //public int getPoints() { return PointsService.calculatePoints( this);  }
 }

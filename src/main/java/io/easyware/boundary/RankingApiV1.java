@@ -2,6 +2,8 @@ package io.easyware.boundary;
 
 import io.easyware.entities.Ranking;
 import io.easyware.entities.TournamentEdition;
+import io.easyware.shared.keycloak.KeycloakUser;
+import io.quarkus.security.Authenticated;
 import lombok.extern.java.Log;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
@@ -44,7 +46,20 @@ public class RankingApiV1 extends RankingApi {
         TournamentEdition tournamentEdition = this.tournamentEditionService.getTournamentById(1);
         List<Ranking> ranking = rankingService.prepareFor(tournamentEdition);
         return ranking.isEmpty() ? Response.noContent().build() : Response.ok().entity(ranking).build();
-
     }
 
+    @GET
+    @Path("position")
+    @Authenticated
+    @Operation(summary = "Get position for user in ranking")
+    @APIResponse(
+            responseCode = "200",
+            description = "OK",
+            content = @Content(mediaType = "application/json"))
+    public Response getRanking() throws IOException {
+        TournamentEdition tournamentEdition = this.tournamentEditionService.getTournamentById(1);
+        KeycloakUser user = keycloakService.findByMail(sec.getUserPrincipal().getName());
+
+        return Response.ok(rankingService.userRank(user, tournamentEdition)).build();
+    }
 }
