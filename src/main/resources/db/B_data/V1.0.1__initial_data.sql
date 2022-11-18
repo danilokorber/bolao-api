@@ -28,7 +28,7 @@ insert into team(id, en, de, pt, short_name) values (10,  'Saudi Arabia', 'Saudi
 insert into team(id, en, de, pt, short_name) values (11,  'Mexico', 'Mexico', 'México', 'MEX');
 insert into team(id, en, de, pt, short_name) values (12,  'Poland', 'Polen', 'Polônia', 'POL');
 insert into team(id, en, de, pt, short_name) values (13,  'France', 'Frankreich', 'França', 'FRA');
-insert into team(id, en, de, pt, short_name) values (14,  'Honduras', 'Honduras', 'Honduras', 'HON');
+insert into team(id, en, de, pt, short_name) values (14,  'Australia', 'Australien', 'Austrália', 'AUS');
 insert into team(id, en, de, pt, short_name) values (15,  'Denmark', 'Dänemark', 'Dinamarca', 'DEN');
 insert into team(id, en, de, pt, short_name) values (16,  'Tunisia', 'Tunesien', 'Tunísia', 'TUN');
 insert into team(id, en, de, pt, short_name) values (17,  'Spain', 'Spanien', 'Espanha', 'ESP');

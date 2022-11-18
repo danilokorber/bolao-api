@@ -23,18 +23,13 @@ public class TeamsApiV1 extends TeamsApi {
     private final String REGEX_GROUP = "^([a-hA-H])$";
     private final String INVALID_GROUP = "Invalid group. Allowed values are from A to H.";
     private final String DESCRIPTION_GROUP = "Can be any letter from A to H.";
-
     private final String REGEX_TEAMID = "^([a-hA-H])([1-4])$";
     private final String INVALID_TEAMID = "Invalid teamId";
     private final String DESCRIPTION_TEAMID = "Combination of group and order.";
-
     private final String INVALID_ORDER = "Invalid order. Allowed values are between 1 and 4.";
     private final String DESCRIPTION_ORDER = "Can be any number from 1 to 4.";
-
-
     private final String PATH_ALL_IN_GROUP = "group/{group}";
     private final String DESC_ALL_IN_GROUP = "Gets all details from the four nations in the given group.";
-
     private final String PATH_GROUP_AND_ORDER = "group/{group}/order/{order}";
     private final String DESC_GROUP_AND_ORDER = "Gets details of nations in the given group with the given order.";
 

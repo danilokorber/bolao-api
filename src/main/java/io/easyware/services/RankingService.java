@@ -80,6 +80,10 @@ public class RankingService {
                 }
                 newRanking.setPoints(points);
 
+                Date now = new Date();
+                Date startSecondRound = new Date(2022, 11, 25, 10,0,0);
+                if (now.before(startSecondRound)) newRanking.getUser().setAttributes(null);
+
                 ranking.add(newRanking);
             }
         });

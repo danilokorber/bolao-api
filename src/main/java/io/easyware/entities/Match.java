@@ -78,6 +78,9 @@ public class Match extends PanacheEntityBase {
     @Column(name = "pen_b")
     private Integer psoAway;
 
+    @Column(name = "api_id")
+    private Integer apiId;
+
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name="match_id")
     @JsonIgnoreProperties({"matchId"})

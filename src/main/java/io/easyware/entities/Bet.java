@@ -2,8 +2,8 @@ package io.easyware.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import io.easyware.services.PointsService;
 import io.easyware.shared.keycloak.KeycloakUser;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import lombok.AllArgsConstructor;
@@ -65,4 +65,6 @@ public class Bet extends PanacheEntityBase {
     public String getUrl() {
         return BASE_URL + "/bets/id/" + id;
     }
+
+    public int getPoints() { return PointsService.calculatePoints( this);  }
 }

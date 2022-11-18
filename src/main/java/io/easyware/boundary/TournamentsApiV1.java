@@ -14,6 +14,7 @@ import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.jose4j.json.internal.json_simple.parser.ParseException;
 
 import javax.validation.constraints.Pattern;
 import javax.ws.rs.Consumes;
@@ -24,6 +25,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -54,6 +56,13 @@ public class TournamentsApiV1 extends TournamentsApi {
     private final String DESC_EDITION_GROUPS = "Gets groups of tournament edition.";
     private final String PATH_EDITION_GROUPS_SLUG = "{tournamentSlug}/editions/{editionSlug}/groups";
     private final String PATH_EDITION_GROUPS_ID = "{tournamentSlug}/editions/id/{id}/groups";
+
+    @GET
+    @Path("getid")
+    public Response getId() throws IOException, ParseException {
+        tournamentService.getId();
+        return Response.ok().build();
+    }
 
     @GET
     @Operation(summary = DESC_ALL)
@@ -223,6 +232,7 @@ public class TournamentsApiV1 extends TournamentsApi {
             return Response.ok().entity(matches).build();
         } else {
             List<Match> nextMatches = matches.stream().filter(m -> m.getKickoff().after(new Date())).collect(Collectors.toList()).subList(0, next);
+            nextMatches.sort(Comparator.comparing(Match::getKickoff));
             log.info("Returning next " + nextMatches.size() + " matches. Should be " + next);
             return Response.ok().entity(nextMatches).build();
         }

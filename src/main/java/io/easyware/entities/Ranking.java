@@ -17,7 +17,7 @@ import java.util.List;
 @ToString
 public class Ranking {
 
-    @JsonIgnoreProperties({"createdTimestamp", "username", "enabled", "totp", "emailVerified", "email", "federatedIdentities", "attributes"})
+    @JsonIgnoreProperties({"createdTimestamp", "username", "enabled", "totp", "emailVerified", "email", "federatedIdentities"})
     private KeycloakUser user;
 
     private List<Bet> bets;

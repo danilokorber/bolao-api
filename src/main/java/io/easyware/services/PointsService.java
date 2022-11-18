@@ -4,11 +4,17 @@ import io.easyware.entities.Bet;
 import io.easyware.entities.Match;
 import lombok.extern.java.Log;
 
-import javax.inject.Inject;
 import java.util.Date;
+import java.util.Optional;
 
 @Log
 public class PointsService {
+
+    public static Integer calculatePoints(Bet bet) {
+        Optional<Match> match = MatchServiceStatic.find(bet.getMatchId());
+        if (match.isEmpty()) return 0;
+        return calculatePoints(match.get(), bet);
+    }
 
     public static Integer calculatePoints(Match match, Bet bet) {
         Date now = new Date();

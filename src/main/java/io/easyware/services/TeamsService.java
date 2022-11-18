@@ -27,4 +27,8 @@ public class TeamsService {
     public Team getTeamById(String teamId) {
         return this.teamsRepository.find("id", teamId.toUpperCase()).firstResult();
     }
+
+    public Team getTeamByShortName(String shortName) {
+        return this.teamsRepository.find("short_name", shortName.toUpperCase()).firstResult();
+    }
 }
