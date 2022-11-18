@@ -10,12 +10,14 @@ import lombok.extern.java.Log;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 @Log
@@ -51,19 +53,38 @@ public class RankingService {
         return res;
     }
 
-    @Scheduled(every = "10s")
+    //@Scheduled(every = "20s")
     public void prepareRanking() {
+        log.info("Updating ranking");
         List<TournamentEdition> all = tournamentEditionService.findAll();
+        log.info("Updating ranking for " + all.size() + " tournaments.");
+        ranking.clear();
+        log.info("Ranking has " + ranking.size() + " entries.");
         all.forEach(t -> {
-            ranking.put(t.getId(), prepareFor(t));
+            log.info("  Updating " + t.getUrl());
+            try {
+                ranking.put(t.getId(), prepareFor(t));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             log.fine("Ranking for " + t.getName() + " updated on " + new Date() + ".");
         });
     }
 
-    private List<Ranking> prepareFor(TournamentEdition tournamentEdition) {
+    public List<Ranking> prepareFor(TournamentEdition tournamentEdition) throws IOException {
         List<Ranking> ranking = new ArrayList<Ranking>();
 
         List<KeycloakUser> users = keycloakService.findAll();
+        List<KeycloakUser> payees = users.stream()
+                .filter(user ->
+                        user.getAttributes() != null &&
+                        user.getAttributes().getPayment_on() != null &&
+                        user.getAttributes().getPayment_on().size() > 0)
+                .collect(Collectors.toList());
+        log.info("user list has size " + users.size() + " and payees list has size " + payees.size());
+        if (payees.isEmpty()) {
+            log.info(users.stream().filter(u -> u.getEmail().equals("danilo@korber.com.br")).findFirst().toString());
+        }
         users.forEach(user -> {
 
             if (user.getAttributes() != null && user.getAttributes().getPayment_on() != null && user.getAttributes().getPayment_on().size() > 0) {
@@ -89,8 +110,10 @@ public class RankingService {
         });
 
         ranking.sort(Comparator.comparingInt(Ranking::getPoints).reversed());
-
+        log.info("ranking has size " + ranking.size());
         return ranking;
     }
+
+
 
 }

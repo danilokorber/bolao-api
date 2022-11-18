@@ -36,14 +36,15 @@ public class MatchUpdate {
     @Scheduled(every = "30s")
     void increment() {
         if (isActive) {
+            log.info("Updating matches");
             matchService.liveMatches().forEach(m -> {
-//                try {
-//                    matchService.updateResult(m);
-//                } catch (IOException e) {
-//                    throw new RuntimeException(e);
-//                } catch (ParseException e) {
-//                    throw new RuntimeException(e);
-//                }
+                try {
+                    matchService.updateResult(m);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
             });
         }
     }

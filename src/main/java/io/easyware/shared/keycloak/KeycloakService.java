@@ -88,7 +88,8 @@ public class KeycloakService {
         }
     }
 
-    public List<KeycloakUser> findAll() {
+    public List<KeycloakUser> findAll() throws IOException {
+        updateUserList();
         return allUsers;
     }
 
