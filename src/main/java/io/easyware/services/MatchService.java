@@ -29,6 +29,10 @@ public class MatchService {
         this.matchRepository = matchRepository;
     }
 
+    public List<Match> findAll() {
+        return matchRepository.findAll().list();
+    }
+
     public Match find(long matchId) {
         return matchRepository.findById(matchId);
     }
