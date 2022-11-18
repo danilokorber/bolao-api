@@ -336,7 +336,7 @@ public class TournamentsApiV1 extends TournamentsApi {
             @PathParam("editionSlug")
             @Pattern(regexp = REGEX_SLUG, message = INVALID_SLUG)
             String editionSlug
-    ) {
+    ) throws IOException {
         TournamentEdition tournamentEdition = this.tournamentEditionService.getTournamentBySlug(tournamentSlug, editionSlug);
         KeycloakUser user = keycloakService.findByMail(sec.getUserPrincipal().getName());
 
