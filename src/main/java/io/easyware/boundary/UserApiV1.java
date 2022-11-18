@@ -46,7 +46,7 @@ public class UserApiV1 extends UserApi {
             responseCode = "200",
             description = "OK",
             content = @Content(mediaType = "application/json"))
-    public Response getAll() {
+    public Response getAll() throws IOException {
         return Response.ok().entity(keycloakService.findAll()).build();
     }
 
