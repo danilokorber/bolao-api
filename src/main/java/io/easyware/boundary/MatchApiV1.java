@@ -1,6 +1,10 @@
 package io.easyware.boundary;
 
+import io.easyware.entities.Bet;
 import io.easyware.entities.Match;
+import io.easyware.services.PointsService;
+import io.easyware.shared.keycloak.KeycloakUser;
+import io.quarkus.security.Authenticated;
 import lombok.extern.java.Log;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
@@ -20,6 +24,7 @@ import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Log
@@ -29,6 +34,7 @@ import java.util.stream.Collectors;
 public class MatchApiV1 extends MatchApi {
 
     @GET
+    @Authenticated
     @Operation(summary = "Get all matches.")
     @APIResponse(
             responseCode = "200",
@@ -47,6 +53,9 @@ public class MatchApiV1 extends MatchApi {
         List<Match> matches = matchService.findAll();
         if (matches.isEmpty()) return Response.noContent().build();
 
+        KeycloakUser user = keycloakService.findByMail(sec.getUserPrincipal().getName());
+        matches.stream().filter(match -> match.getKickoff().after(new Date())).forEach(match -> matchService.keepOnlyBetsOf(match, user.getId()));
+
         if (next == 0) {
             return Response.ok().entity(matches).build();
         } else {
@@ -58,6 +67,7 @@ public class MatchApiV1 extends MatchApi {
 
     @GET
     @Path("live")
+    @Authenticated
     @Operation(summary = "Get all live matches.")
     @APIResponse(
             responseCode = "200",
@@ -71,13 +81,18 @@ public class MatchApiV1 extends MatchApi {
             responseCode = "404",
             description = "Not found")
     public Response findLive() {
-        List<Match> matches = matchService.findAll().stream().filter(m -> m.isLive()).collect(Collectors.toList());
+        List<Match> matches = matchService.findAll().stream().filter(Match::isLive).collect(Collectors.toList());
         if (matches.isEmpty()) return Response.ok().entity(new ArrayList<>()).build();
+
+        KeycloakUser user = keycloakService.findByMail(sec.getUserPrincipal().getName());
+        matches.stream().filter(match -> match.getKickoff().after(new Date())).forEach(match -> matchService.keepOnlyBetsOf(match, user.getId()));
+
         return Response.ok().entity(matches).build();
     }
 
     @GET
     @Path("{matchId}")
+    @Authenticated
     @Operation(summary = "Get details of a given match based on its id.")
     @APIResponse(
             responseCode = "200",
@@ -97,6 +112,12 @@ public class MatchApiV1 extends MatchApi {
     ) {
         Match match = this.matchService.find(matchId);
         if (match != null) return Response.ok().entity(match).build();
+
+        KeycloakUser user = keycloakService.findByMail(sec.getUserPrincipal().getName());
+        if (match.getKickoff().after(new Date()))
+            matchService.keepOnlyBetsOf(match, user.getId());
+
+
         return Response.noContent().build();
     }
 }

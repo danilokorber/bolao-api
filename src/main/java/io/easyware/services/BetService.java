@@ -37,7 +37,7 @@ public class BetService {
 
     @Transactional
     public Bet save(Bet bet) {
-        bet.persist();
+        bet.persistAndFlush();
         return bet;
     }
 

@@ -30,23 +30,23 @@ import static io.easyware.shared.Slug.BASE_URL;
 public class Match extends PanacheEntityBase {
 
     @Id
-    @NotBlank
+    //@NotBlank
     private long id;
 
-    @NotBlank
+    //@NotBlank
     @Column(name = "tournament_edition_id")
     @JsonIgnore
     private long tournamentEditionId;
 
-    @NotBlank
+    //@NotBlank
     @Column(name = "tournament_match_id")
     private long tournamentMatchId;
 
-    @NotBlank
+    //@NotBlank
     @Column(name = "group_id")
     private long groupId;
 
-    @NotBlank
+    //@NotBlank
     @Column(name = "kick_off")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
     private Date kickoff;
@@ -105,7 +105,7 @@ public class Match extends PanacheEntityBase {
         Date now = new Date();
         long diff = now.getTime() - kickoff.getTime();
 
-        long seconds = TimeUnit.MILLISECONDS.toSeconds(diff);
-        return (seconds > 0) && (seconds < 10_800);
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(diff);
+        return (minutes >= 0) && (minutes <= 180);
     }
 }

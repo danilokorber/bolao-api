@@ -54,7 +54,7 @@ public class BetApiV1 extends BetApi {
                     log.info("  Updating bet " + bet.getId() + ". Current " + bet.isActive());
                     bet.setActive(true);
                     log.info("  Updated bet " + bet.getId() + ". Current " + bet.isActive());
-                    bet.persist();
+                    bet.persistAndFlush();
                     log.info("  Saved bet " + bet.toString() + ".");
                 }
             }
