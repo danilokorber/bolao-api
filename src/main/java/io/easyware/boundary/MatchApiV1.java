@@ -55,6 +55,7 @@ public class MatchApiV1 extends MatchApi {
 
         KeycloakUser user = keycloakService.findByMail(sec.getUserPrincipal().getName());
         matches.stream().filter(match -> match.getKickoff().after(new Date())).forEach(match -> matchService.keepOnlyBetsOf(match, user.getId()));
+        matchService.sortByKickOff(matches);
 
         if (next == 0) {
             return Response.ok().entity(matches).build();
@@ -86,6 +87,7 @@ public class MatchApiV1 extends MatchApi {
 
         KeycloakUser user = keycloakService.findByMail(sec.getUserPrincipal().getName());
         matches.stream().filter(match -> match.getKickoff().after(new Date())).forEach(match -> matchService.keepOnlyBetsOf(match, user.getId()));
+        matchService.sortByKickOff(matches);
 
         return Response.ok().entity(matches).build();
     }

@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -80,6 +81,10 @@ public class MatchService {
 
     public List<Match> liveMatches() {
         return matchRepository.listAll().stream().filter(Match::isLive).collect(Collectors.toList());
+    }
+
+    public void sortByKickOff(List<Match> matches) {
+        matches.sort(Comparator.comparing(Match::getKickoff));
     }
 
     @Transactional
