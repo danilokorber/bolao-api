@@ -89,6 +89,8 @@ public class Match extends PanacheEntityBase {
     @Transient
     boolean live;
 
+    String status;
+
     public String getUrl() {
         return BASE_URL + "/matches/" + id;
     }

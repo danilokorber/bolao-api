@@ -64,6 +64,9 @@ public class MatchUpdate {
                     JSONObject halfTime = (JSONObject) score.get("halfTime");
 
                     try {
+                        match.setStatus(matchJson.get("status").toString());
+                        log.info(matchDetails + " status: " + match.getStatus());
+
                         if (fullTime.get("home") != null) {
                             log.info("     fullTime: " + fullTime);
                             match.setScoreHome(Integer.parseInt(fullTime.get("home").toString()));
@@ -83,6 +86,7 @@ public class MatchUpdate {
                         match.setScoreHome(-1);
                         match.setScoreAway(-1);
                     }
+
 
                     try {
                         match.persistAndFlush();
