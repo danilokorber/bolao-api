@@ -22,4 +22,7 @@ public class RankingApi {
 
     @Inject
     TournamentEditionService tournamentEditionService;
+
+    @Inject
+    BetService betService;
 }

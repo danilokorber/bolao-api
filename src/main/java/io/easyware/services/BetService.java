@@ -80,10 +80,14 @@ public class BetService {
     }
 
     public List<Bet> getAllBetsFromUserForTournamentEdition(String userId, TournamentEdition tournamentEdition) {
+        return getAllBetsFromUserForTournamentEdition(userId, tournamentEdition, new Date());
+    }
+
+    public List<Bet> getAllBetsFromUserForTournamentEdition(String userId, TournamentEdition tournamentEdition, Date date) {
         List<Bet> allBets = betRepository.find("active = ?1 AND userId = ?2", true, userId).list();
-         List<Bet> bets = allBets.stream().filter(b -> {
+        List<Bet> bets = allBets.stream().filter(b -> {
             Match match = matchService.find(b.getMatchId());
-            return match.getKickoff().before(new Date());
+            return match.getKickoff().before(date);
         }).collect(Collectors.toList());
         bets.forEach(bet -> bet.setPoints(PointsService.calculatePoints(matchService.find(bet.getMatchId()), bet)));
         return bets.stream().filter(bet -> matchService.matchIsFromTournamentEditions(bet.getMatchId(), tournamentEdition.getId())).collect(Collectors.toList());
