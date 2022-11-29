@@ -101,9 +101,9 @@ public class RankingService {
                 }
                 newRanking.setPoints(points);
 
-                Date now = new Date();
-                Date startThirdRound = new Date(2022, 11, 28, 15,0,0);
-                if (now.before(startThirdRound)) newRanking.getUser().setAttributes(null);
+//                Date now = new Date();
+//                Date startThirdRound = new Date(2022, 11, 28, 15,0,0);
+//                if (now.before(startThirdRound)) newRanking.getUser().setAttributes(null);
 
                 ranking.add(newRanking);
             }
