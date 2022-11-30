@@ -5,6 +5,7 @@ import io.easyware.entities.Ranking;
 import io.easyware.entities.TournamentEdition;
 import io.easyware.shared.keycloak.KeycloakUser;
 import io.quarkus.security.Authenticated;
+import io.vertx.core.json.JsonObject;
 import lombok.extern.java.Log;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
@@ -55,7 +56,7 @@ public class RankingApiV1 extends RankingApi {
 
     @GET
     @Authenticated
-    @Path("history")
+    @Path("history1")
     public Response history() throws ParseException {
         KeycloakUser user = keycloakService.findByMail(sec.getUserPrincipal().getName());
         TournamentEdition tournamentEdition = this.tournamentEditionService.getTournamentById(1);
@@ -81,6 +82,67 @@ public class RankingApiV1 extends RankingApi {
         sortedHistory.remove(delete);
 
         return Response.ok().entity(sortedHistory).build();
+    }
+
+    @GET
+    //@Authenticated
+    @Path("history")
+    public Response history2() throws ParseException, IOException {
+        KeycloakUser user = keycloakService.findByMail("danilo@korber.com.br");
+        //KeycloakUser user = keycloakService.findByMail(sec.getUserPrincipal().getName());
+        TournamentEdition tournamentEdition = this.tournamentEditionService.getTournamentById(1);
+
+        List<Ranking> ranking = rankingService.prepareFor(tournamentEdition);
+        Ranking firstPlace = ranking.get(0);
+        KeycloakUser firstUser = keycloakService.findByMail(firstPlace.getUser().getEmail());
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date toDelete = formatter.parse("2022-11-19");
+        Date startDate = formatter.parse("2022-11-20");
+        Date endDate = new Date();
+        LocalDate delete = toDelete.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate start = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate end = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().plusDays(1);
+
+        Map<LocalDate, AtomicInteger> myHistory = new HashMap<>();
+        Map<LocalDate, AtomicInteger> firstHistory = new HashMap<>();
+        Map<LocalDate, Integer> myPositions = new HashMap<>();
+        Map<LocalDate, Integer> firstPositions = new HashMap<>();
+
+        for (LocalDate date = start; date.isBefore(end) || date.isEqual(end); date = date.plusDays(1)) {
+            List<Bet> myBets = betService.getAllBetsFromUserForTournamentEdition(user.getId(), tournamentEdition, Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+            AtomicInteger myPoints = new AtomicInteger();
+            myBets.forEach(bet -> myPoints.addAndGet(bet.getPoints()));
+            myHistory.put(date.minusDays(1), myPoints);
+            myPositions.put(date.minusDays(1), (Integer) rankingService.userRank(user, tournamentEdition, Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant())).get("position"));
+
+            List<Bet> firstBets = betService.getAllBetsFromUserForTournamentEdition(firstUser.getId(), tournamentEdition, Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+            AtomicInteger firstPoints = new AtomicInteger();
+            firstBets.forEach(bet -> firstPoints.addAndGet(bet.getPoints()));
+            firstHistory.put(date.minusDays(1), firstPoints);
+            firstPositions.put(date.minusDays(1), (Integer) rankingService.userRank(firstUser, tournamentEdition, Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant())).get("position"));
+
+        }
+
+        Map<LocalDate, AtomicInteger> sortedMyHistory = new TreeMap<LocalDate, AtomicInteger>(myHistory);
+        Map<LocalDate, Integer> sortedMyPositions = new TreeMap<LocalDate, Integer>(myPositions);
+        sortedMyHistory.remove(delete);
+        JsonObject my = new JsonObject();
+        my.put("position", sortedMyPositions);
+        my.put("history", sortedMyHistory);
+
+        Map<LocalDate, AtomicInteger> sortedFirstHistory = new TreeMap<LocalDate, AtomicInteger>(firstHistory);
+        Map<LocalDate, Integer> sortedFirstPositions = new TreeMap<LocalDate, Integer>(firstPositions);
+        sortedFirstHistory.remove(delete);
+        JsonObject first = new JsonObject();
+        first.put("position", sortedFirstPositions);
+        first.put("history", sortedFirstHistory);
+
+        JsonObject history = new JsonObject();
+        history.put("first", first);
+        history.put("my", my);
+
+        return Response.ok().entity(history).build();
     }
 
     @GET

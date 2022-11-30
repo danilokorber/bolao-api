@@ -42,8 +42,13 @@ public class RankingService {
     }
 
     public Map<String, Object> userRank(KeycloakUser user, TournamentEdition tournamentEdition) throws IOException {
+        return userRank(user, tournamentEdition, new Date());
+    }
+
+    public Map<String, Object> userRank(KeycloakUser user, TournamentEdition tournamentEdition, Date date) throws IOException {
         Map<String, Object> res = new HashMap<>();
-        List<Ranking> ranking = prepareFor(tournamentEdition);
+        List<Ranking> ranking = prepareFor(tournamentEdition, date);
+        ranking.sort(Comparator.comparingInt(Ranking::getPoints).reversed());
         ranking.forEach(r -> {
             if (r.getUser().getEmail().equals(user.getEmail())) {
                 res.put("position", ranking.indexOf(r) + 1);
@@ -53,25 +58,11 @@ public class RankingService {
         return res;
     }
 
-    //@Scheduled(every = "20s")
-    public void prepareRanking() {
-        log.info("Updating ranking");
-        List<TournamentEdition> all = tournamentEditionService.findAll();
-        log.info("Updating ranking for " + all.size() + " tournaments.");
-        ranking.clear();
-        log.info("Ranking has " + ranking.size() + " entries.");
-        all.forEach(t -> {
-            log.info("  Updating " + t.getUrl());
-            try {
-                ranking.put(t.getId(), prepareFor(t));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            log.fine("Ranking for " + t.getName() + " updated on " + new Date() + ".");
-        });
+    public List<Ranking> prepareFor(TournamentEdition tournamentEdition) throws IOException {
+        return prepareFor(tournamentEdition, new Date());
     }
 
-    public List<Ranking> prepareFor(TournamentEdition tournamentEdition) throws IOException {
+    public List<Ranking> prepareFor(TournamentEdition tournamentEdition, Date date) throws IOException {
         List<Ranking> ranking = new ArrayList<Ranking>();
 
         List<KeycloakUser> users = keycloakService.findAll();
@@ -91,7 +82,7 @@ public class RankingService {
 
                 Ranking newRanking = new Ranking();
                 newRanking.setUser(user);
-                List<Bet> bets = betService.getAllBetsFromUserForTournamentEdition(user.getId(), tournamentEdition);
+                List<Bet> bets = betService.getAllBetsFromUserForTournamentEdition(user.getId(), tournamentEdition, date);
                 newRanking.setBets(bets);
                 int points = 0;
                 if (bets.size() > 0) {
@@ -100,10 +91,6 @@ public class RankingService {
                             .reduce(0, Integer::sum);
                 }
                 newRanking.setPoints(points);
-
-//                Date now = new Date();
-//                Date startThirdRound = new Date(2022, 11, 28, 15,0,0);
-//                if (now.before(startThirdRound)) newRanking.getUser().setAttributes(null);
 
                 ranking.add(newRanking);
             }
