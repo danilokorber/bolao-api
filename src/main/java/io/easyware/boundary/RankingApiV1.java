@@ -88,8 +88,7 @@ public class RankingApiV1 extends RankingApi {
     //@Authenticated
     @Path("history")
     public Response history2() throws ParseException, IOException {
-        KeycloakUser user = keycloakService.findByMail("danilo@korber.com.br");
-        //KeycloakUser user = keycloakService.findByMail(sec.getUserPrincipal().getName());
+        KeycloakUser user = keycloakService.findByMail(sec.getUserPrincipal().getName());
         TournamentEdition tournamentEdition = this.tournamentEditionService.getTournamentById(1);
 
         List<Ranking> ranking = rankingService.prepareFor(tournamentEdition);
