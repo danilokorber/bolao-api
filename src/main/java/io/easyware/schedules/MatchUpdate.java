@@ -69,12 +69,12 @@ public class MatchUpdate {
                         match.setStatus(matchJson.get("status").toString());
                         log.info(matchDetails + " status: " + match.getStatus());
 
-                        if (extraTime.get("home") != null) {
+                        if (extraTime != null && extraTime.get("home") != null) {
                             match.setScoreHome(Integer.parseInt(regularTime.get("home").toString()) + Integer.parseInt(extraTime.get("home").toString()));
                             match.setScoreAway(Integer.parseInt(regularTime.get("away").toString()) + Integer.parseInt(extraTime.get("away").toString()));
                             log.info(matchDetails + " is in extra time: " + match.getScoreHome() + ":" + match.getScoreAway());
 
-                            if (penaltis.get("home") != null) {
+                            if (penaltis != null && penaltis.get("home") != null) {
                                 match.setPsoHome(Integer.parseInt(penaltis.get("home").toString()));
                                 match.setPsoAway(Integer.parseInt(penaltis.get("away").toString()));
                                 log.info(matchDetails + " is penaltis: " + match.getScoreHome() + ":" + match.getScoreAway());
