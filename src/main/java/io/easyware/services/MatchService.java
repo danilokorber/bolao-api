@@ -4,7 +4,6 @@ import io.easyware.entities.Bet;
 import io.easyware.entities.Match;
 import io.easyware.repositories.MatchRepository;
 import io.easyware.shared.keycloak.KeycloakService;
-import io.easyware.shared.keycloak.KeycloakUser;
 import lombok.extern.java.Log;
 import org.jose4j.json.internal.json_simple.JSONObject;
 import org.jose4j.json.internal.json_simple.parser.JSONParser;
@@ -23,6 +22,7 @@ import java.net.URL;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
@@ -52,6 +52,13 @@ public class MatchService {
         Match found = matchRepository.findById(matchId);
         calculatePoints(found);
         return found;
+    }
+
+    public Optional<Match> findKOMatchWithHomeId(long koMatchId) {
+        return matchRepository.findAll().stream().filter(m -> m.getHome().getId() == koMatchId).findFirst();
+    }
+    public Optional<Match> findKOMatchWithAwayId(long koMatchId) {
+        return matchRepository.findAll().stream().filter(m -> m.getAway().getId() == koMatchId).findFirst();
     }
 
     public void calculatePoints(Match match) {

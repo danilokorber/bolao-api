@@ -126,6 +126,7 @@ public class RankingApiV1 extends RankingApi {
         Map<LocalDate, AtomicInteger> sortedMyHistory = new TreeMap<LocalDate, AtomicInteger>(myHistory);
         Map<LocalDate, Integer> sortedMyPositions = new TreeMap<LocalDate, Integer>(myPositions);
         sortedMyHistory.remove(delete);
+        sortedMyPositions.remove(delete);
         JsonObject my = new JsonObject();
         my.put("position", sortedMyPositions);
         my.put("history", sortedMyHistory);
@@ -133,6 +134,7 @@ public class RankingApiV1 extends RankingApi {
         Map<LocalDate, AtomicInteger> sortedFirstHistory = new TreeMap<LocalDate, AtomicInteger>(firstHistory);
         Map<LocalDate, Integer> sortedFirstPositions = new TreeMap<LocalDate, Integer>(firstPositions);
         sortedFirstHistory.remove(delete);
+        sortedFirstPositions.remove(delete);
         JsonObject first = new JsonObject();
         first.put("position", sortedFirstPositions);
         first.put("history", sortedFirstHistory);

@@ -28,6 +28,10 @@ public class TeamsService {
         return this.teamsRepository.find("id", teamId.toUpperCase()).firstResult();
     }
 
+    public Team getTeamById(long teamId) {
+        return this.teamsRepository.findById(teamId);
+    }
+
     public Team getTeamByShortName(String shortName) {
         return this.teamsRepository.find("short_name", shortName.toUpperCase()).firstResult();
     }
