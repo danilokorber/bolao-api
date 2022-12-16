@@ -23,4 +23,6 @@ public class Ranking {
     private List<Bet> bets;
 
     private int points = 0;
+
+    private int bonusPoints = 0;
 }

@@ -1,6 +1,7 @@
 package io.easyware.services;
 
 import io.easyware.entities.Bet;
+import io.easyware.entities.Match;
 import io.easyware.entities.Ranking;
 import io.easyware.entities.TournamentEdition;
 import io.easyware.shared.keycloak.KeycloakService;
@@ -28,6 +29,9 @@ public class RankingService {
 
     @Inject
     BetService betService;
+
+    @Inject
+    MatchService    matchService;
 
     @Inject
     TournamentEditionService tournamentEditionService;
@@ -64,6 +68,7 @@ public class RankingService {
 
     public List<Ranking> prepareFor(TournamentEdition tournamentEdition, Date date) throws IOException {
         List<Ranking> ranking = new ArrayList<Ranking>();
+        List<Match> matches = matchService.findAll();
 
         List<KeycloakUser> users = keycloakService.findAll();
         List<KeycloakUser> payees = users.stream()
@@ -90,7 +95,8 @@ public class RankingService {
                             .map(Bet::getPoints)
                             .reduce(0, Integer::sum);
                 }
-                newRanking.setPoints(points);
+                newRanking.setBonusPoints(PointsService.calculateBonusPoints(user, matches));
+                newRanking.setPoints(points + newRanking.getBonusPoints());
 
                 ranking.add(newRanking);
             }
